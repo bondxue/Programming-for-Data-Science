@@ -1,0 +1,48 @@
+/* Query 1 - query used for first insight */ 
+SELECT title, name, rental_duration, NTILE(4) OVER (ORDER BY rental_duration) AS stanard_quartile
+FROM
+	(SELECT f.title, c.name, f.rental_duration
+	FROM category c
+	JOIN film_category fc
+	ON c.category_id = fc.category_id
+	JOIN film f
+	ON f.film_id = fc.film_id
+	WHERE c.name IN ('Animation', 'Children','Classics','Comedy','Family','Music')) AS t1
+ORDER BY 4
+
+
+/* Query 2 - query used for first insight */ 
+SELECT title, name, rental_duration, NTILE(4) OVER (ORDER BY rental_duration) AS stanard_quartile
+FROM
+	(SELECT f.title, c.name, f.rental_duration
+	FROM category c
+	JOIN film_category fc
+	ON c.category_id = fc.category_id
+	JOIN film f
+	ON f.film_id = fc.film_id
+	WHERE c.name IN ('Animation', 'Children','Classics','Comedy','Family','Music')) AS t1
+ORDER BY 4
+
+
+/* Query 3 - query used for first insight */
+SELECT Rental_month, Rental_year, Store_ID, COUNT(count_rentals) Count_rentals
+FROM 
+	(SELECT DATE_PART('month', r.rental_date) as Rental_month, DATE_PART('year', r.rental_date) as Rental_year, i.store_id Store_ID, 
+		COUNT(i.film_id) OVER (PARTITION BY DATE_TRUNC('month', r.rental_date) ORDER BY i.store_id) as count_rentals
+	FROM rental r
+	JOIN inventory i
+	ON r.inventory_id = i.inventory_id) AS t1
+GROUP BY 1, 2, 3
+ORDER BY Count_rentals DESC
+
+
+/* Query 4 - query used for first insight */
+SELECT Rental_month, Rental_year, Store_ID, COUNT(count_rentals) Count_rentals
+FROM 
+	(SELECT DATE_PART('month', r.rental_date) as Rental_month, DATE_PART('year', r.rental_date) as Rental_year, i.store_id Store_ID, 
+		COUNT(i.film_id) OVER (PARTITION BY DATE_TRUNC('month', r.rental_date) ORDER BY i.store_id) as count_rentals
+	FROM rental r
+	JOIN inventory i
+	ON r.inventory_id = i.inventory_id) AS t1
+GROUP BY 1, 2, 3
+ORDER BY Count_rentals DESC
