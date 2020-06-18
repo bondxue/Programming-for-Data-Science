@@ -173,7 +173,7 @@ def show_data(df):
     while show_more:
 
         if response.lower() == 'yes':
-            print(df.loc[index:index+4, :])
+            print(df.loc[index:index+4])
             index += 5
             response = input('Want see 5 more? Yes or No?\n')
         if response.lower() == 'no':
